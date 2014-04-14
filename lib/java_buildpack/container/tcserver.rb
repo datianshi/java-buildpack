@@ -16,18 +16,18 @@
 
 require 'java_buildpack/component/modular_component'
 require 'java_buildpack/container'
-require 'java_buildpack/container/tomcat/tomcat_insight_support'
-require 'java_buildpack/container/tomcat/tomcat_instance'
-require 'java_buildpack/container/tomcat/tomcat_lifecycle_support'
-require 'java_buildpack/container/tomcat/tomcat_logging_support'
-require 'java_buildpack/container/tomcat/tomcat_redis_store'
+#require 'java_buildpack/container/tomcat/tomcat_insight_support'
+require 'java_buildpack/container/tcserver/tcserver_instance'
+#require 'java_buildpack/container/tomcat/tomcat_lifecycle_support'
+#require 'java_buildpack/container/tomcat/tomcat_logging_support'
+#require 'java_buildpack/container/tomcat/tomcat_redis_store'
 require 'java_buildpack/util/java_main_utils'
 
 module JavaBuildpack
   module Container
 
     # Encapsulates the detect, compile, and release functionality for Tomcat applications.
-    class Tomcat < JavaBuildpack::Component::ModularComponent
+    class Tcserver < JavaBuildpack::Component::ModularComponent
 
       protected
 
@@ -38,19 +38,20 @@ module JavaBuildpack
         [
           @droplet.java_home.as_env_var,
           @droplet.java_opts.as_env_var,
-          "$PWD/#{(@droplet.sandbox + 'bin/catalina.sh').relative_path_from(@droplet.root)}",
-          'run'
+          "$PWD/#{(@droplet.sandbox + 'tcruntime-ctl.sh').relative_path_from(@droplet.root)}",
+          'start',
+          'tcserver'
         ].flatten.compact.join(' ')
       end
 
       # (see JavaBuildpack::Component::ModularComponent#sub_components)
       def sub_components(context)
         [
-          TomcatInstance.new(sub_configuration_context(context, 'tomcat')),
-          TomcatLifecycleSupport.new(sub_configuration_context(context, 'lifecycle_support')),
-          TomcatLoggingSupport.new(sub_configuration_context(context, 'logging_support')),
-          TomcatRedisStore.new(sub_configuration_context(context, 'redis_store')),
-          TomcatInsightSupport.new(context)
+          TcserverInstance.new(sub_configuration_context(context, 'tcserver')),
+#          TomcatLifecycleSupport.new(sub_configuration_context(context, 'lifecycle_support')),
+#          TomcatLoggingSupport.new(sub_configuration_context(context, 'logging_support')),
+#          TomcatRedisStore.new(sub_configuration_context(context, 'redis_store')),
+#          TomcatInsightSupport.new(context)
         ]
       end
 

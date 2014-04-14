@@ -1,6 +1,6 @@
-.idea/tasks.xml
-.idea/workspace.xml
+.idea/
 .yardoc
 build/
 coverage
 doc
+java-buildpack.iml

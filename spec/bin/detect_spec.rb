@@ -26,6 +26,13 @@ describe 'detect script', :integration do
     run("bin/detect #{app_dir}") { |status| expect(status).to be_success }
   end
 
+  it 'should return success',
+     show_output: true,
+     app_fixture: 'integration_webinf' do
+
+    run("bin/detect #{app_dir}") { |status| expect(status).to be_success }
+  end
+
   it 'should fail to detect when no containers detect' do
     run("bin/detect #{app_dir}") do |status|
       expect(status).not_to be_success

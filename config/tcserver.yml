@@ -1,2 +1,3 @@
-version: 2.8.+
-repository_root: "http://localhost:8080/app/repo/tcserver"
+tcserver:
+  version: 2.8.+
+  repository_root: "http://localhost:8080/app/repo/tcserver"

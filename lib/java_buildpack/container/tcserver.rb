@@ -41,7 +41,7 @@ module JavaBuildpack
           @droplet.java_opts.as_env_var,
           "$PWD/#{(@droplet.sandbox + 'tcserver/bin/tcruntime-ctl.sh').relative_path_from(@droplet.root)}",
           #"$PWD/#{(@droplet.sandbox + 'tcserver').relative_path_from(@droplet.root)}",
-          'start'
+          'run'
         ].flatten.compact.join(' ')
       end
 

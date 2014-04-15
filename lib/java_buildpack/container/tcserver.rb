@@ -38,6 +38,7 @@ module JavaBuildpack
         [
           "JAVA_ENDORSED_DIRS=$PWD/#{(@droplet.sandbox + 'tcserver/endorsed').relative_path_from(@droplet.root)}",
           @droplet.java_home.as_env_var,
+          @droplet.java_home.as_jre_env_var,
           @droplet.java_opts.as_env_var,
           "$PWD/#{(@droplet.sandbox + 'tcserver/bin/tcruntime-ctl.sh').relative_path_from(@droplet.root)}",
           #"$PWD/#{(@droplet.sandbox + 'tcserver').relative_path_from(@droplet.root)}",

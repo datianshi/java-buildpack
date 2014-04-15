@@ -42,6 +42,10 @@ module JavaBuildpack
         "JAVA_HOME=#{root}"
       end
 
+      def as_jre_env_var
+        "JRE_HOME=#{root}"
+      end
+
       # Execute a block with the +JAVA_HOME+ environment variable set
       #
       # @yield yields to block with the +JAVA_HOME+ environment variable set

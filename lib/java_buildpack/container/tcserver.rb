@@ -18,8 +18,8 @@ require 'java_buildpack/component/modular_component'
 require 'java_buildpack/container'
 #require 'java_buildpack/container/tomcat/tomcat_insight_support'
 require 'java_buildpack/container/tcserver/tcserver_instance'
-#require 'java_buildpack/container/tomcat/tomcat_lifecycle_support'
-#require 'java_buildpack/container/tomcat/tomcat_logging_support'
+require 'java_buildpack/container/tcserver/tcserver_lifecycle_support'
+require 'java_buildpack/container/tcserver/tcserver_logging_support'
 #require 'java_buildpack/container/tomcat/tomcat_redis_store'
 require 'java_buildpack/util/java_main_utils'
 
@@ -36,11 +36,12 @@ module JavaBuildpack
         @droplet.java_opts.add_system_property 'http.port', '$PORT'
 
         [
+          "JAVA_ENDORSED_DIRS=$PWD/#{(@droplet.sandbox + 'tcserver/endorsed').relative_path_from(@droplet.root)}",
           @droplet.java_home.as_env_var,
           @droplet.java_opts.as_env_var,
           "$PWD/#{(@droplet.sandbox + 'tcserver/bin/tcruntime-ctl.sh').relative_path_from(@droplet.root)}",
           #"$PWD/#{(@droplet.sandbox + 'tcserver').relative_path_from(@droplet.root)}",
-          'start',
+          'start'
         ].flatten.compact.join(' ')
       end
 
@@ -48,8 +49,8 @@ module JavaBuildpack
       def sub_components(context)
         [
           TcserverInstance.new(sub_configuration_context(context, 'tcserver')),
-#          TomcatLifecycleSupport.new(sub_configuration_context(context, 'lifecycle_support')),
-#          TomcatLoggingSupport.new(sub_configuration_context(context, 'logging_support')),
+          TcserverLifecycleSupport.new(sub_configuration_context(context, 'lifecycle_support')),
+          TcserverLoggingSupport.new(sub_configuration_context(context, 'logging_support')),
 #          TomcatRedisStore.new(sub_configuration_context(context, 'redis_store')),
 #          TomcatInsightSupport.new(context)
         ]

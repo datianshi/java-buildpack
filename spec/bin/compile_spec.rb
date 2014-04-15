@@ -26,6 +26,15 @@ describe 'compile script', :integration do
     run("bin/compile #{app_dir} #{app_dir + '.cache'}") { |status| expect(status).to be_success }
   end
 
+  it 'should return success',
+     show_output: true,
+     app_fixture: 'integration_webinf' do
+
+    run("bin/detect #{app_dir}") { |status| expect(status).to be_success }
+    run("bin/compile #{app_dir} #{app_dir + '.cache'}") { |status| expect(status).to be_success }
+    run("bin/release #{app_dir}") { |status| expect(status).to be_success }
+  end
+
   it 'should fail to compile when no containers detect' do
     run("bin/compile #{app_dir} #{app_dir + '.cache'}") do |status|
       expect(status).not_to be_success

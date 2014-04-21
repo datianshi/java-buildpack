@@ -56,11 +56,12 @@ module JavaBuildpack
     def compile
       puts BUILDPACK_MESSAGE % @buildpack_version
 
-      container = component_detection('container', @containers, true).first
+      container = component_detection(@containers).first
+      puts container
       fail 'No container can run this application' unless container
 
-      component_detection('JRE', @jres, true).first.compile
-      component_detection('framework', @frameworks, false).each { |framework| framework.compile }
+      component_detection(@jres).first.compile
+      component_detection(@frameworks).each { |framework| framework.compile }
       container.compile
     end
 
@@ -69,11 +70,11 @@ module JavaBuildpack
     #
     # @return [String] The payload required to run the application.
     def release
-      container = component_detection('container', @containers, true).first
+      container = component_detection(@containers).first
       fail 'No container can run this application' unless container
 
-      component_detection('JRE', @jres, true).first.release
-      component_detection('framework', @frameworks, false).each { |framework| framework.release }
+      component_detection(@jres).first.release
+      component_detection(@frameworks).each { |framework| framework.release }
       command = container.release
 
       payload = {
@@ -82,7 +83,7 @@ module JavaBuildpack
         'default_process_types' => { 'web' => command }
       }.to_yaml
 
-      @logger.debug { "Release Payload\n#{payload}" }
+      @logger.debug { "Release Payload #{payload}" }
 
       payload
     end
@@ -118,26 +119,8 @@ module JavaBuildpack
                                 java_opts, app_dir)
     end
 
-    def component_detection(type, components, unique)
-      detected, _tags = detection type, components, unique
-      detected
-    end
-
-    def detection(type, components, unique)
-      detected = []
-      tags     = []
-
-      components.each do |component|
-        result = component.detect
-
-        if result
-          detected << component
-          tags << result
-        end
-      end
-
-      fail "Application can be run by more than one #{type}: #{names detected}" if unique && detected.size > 1
-      [detected, tags]
+    def component_detection(components)
+      components.select { |component| component.detect }
     end
 
     def instantiate(components, additional_libraries, application, java_home, java_opts, root)
@@ -177,7 +160,19 @@ module JavaBuildpack
     end
 
     def tag_detection(type, components, unique)
-      _detected, tags = detection type, components, unique
+      detected = []
+      tags     = []
+
+      components.each do |component|
+        result = component.detect
+
+        if result
+          detected << component
+          tags << result
+        end
+      end
+
+      fail "Application can be run by more than one #{type}: #{names detected}" if unique && tags.size > 1
       tags
     end
 

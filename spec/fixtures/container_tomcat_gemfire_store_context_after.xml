@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Context allowLinking='true'>
+    <Manager className='com.gemstone.gemfire.modules.session.catalina.Tomcat7DeltaSessionManager'/>
+</Context>

@@ -57,6 +57,7 @@ module JavaBuildpack
       puts BUILDPACK_MESSAGE % @buildpack_version
 
       container = component_detection(@containers).first
+      puts container
       fail 'No container can run this application' unless container
 
       component_detection(@jres).first.compile

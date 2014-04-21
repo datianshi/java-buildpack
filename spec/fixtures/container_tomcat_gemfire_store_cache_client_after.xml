@@ -1,0 +1,5 @@
+<client-cache>
+    <pool name='sessions' subscription-enabled='true'>
+        <locator host='test-host' port='test-port'/>
+    </pool>
+</client-cache>

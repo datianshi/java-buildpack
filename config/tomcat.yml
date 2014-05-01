@@ -32,4 +32,4 @@ redis_store:
   connection_pool_size: 2
 gemfire_module:
   version: 7.0.+
-  repository_root: "http://192.168.62.1:8080/app/repo/gemfire-module"
+  repository_root: "http://buildpack:shaozhen@buildpack.felixding.com/gemfire-session"

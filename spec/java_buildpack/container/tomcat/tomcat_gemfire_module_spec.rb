@@ -16,9 +16,9 @@
 
 require 'spec_helper'
 require 'component_helper'
-require 'java_buildpack/container/tomcat/tomcat_gemfire_store'
+require 'java_buildpack/container/tomcat/tomcat_gemfire_module'
 
-describe JavaBuildpack::Container::TomcatGemfireStore do
+describe JavaBuildpack::Container::TomcatGemfireModule do
   include_context 'component_helper'
 
   let(:component_id) { 'tomcat' }
@@ -36,19 +36,19 @@ describe JavaBuildpack::Container::TomcatGemfireStore do
   context do
 
     before do
-      allow(services).to receive(:one_service?).with(/session-gemfire-replication/, 'locator', 'port')
+      allow(services).to receive(:one_service?).with(/pivotal-gemfire/, 'host', 'port')
                          .and_return(true)
-      allow(services).to receive(:find_service).and_return('credentials' => { 'locator' => 'test-host',
+      allow(services).to receive(:find_service).and_return('credentials' => { 'host' => 'test-host',
                                                                               'port'     => 'test-port' })
     end
 
     it 'should detect with a session-replication service' do
-      expect(component.detect).to eq("tomcat-gemfire-store=#{version}")
+      expect(component.detect).to eq("tomcat-gemfire-module=#{version}")
     end
 
     it 'should copy resources',
-       app_fixture:   'container_tomcat_gemfire_store',
-       cache_fixture: 'stub-gemfire-store.tar.gz' do
+       app_fixture:   'container_tomcat_gemfire_module',
+       cache_fixture: 'stub-gemfire-module.tar.gz' do
 
       component.compile
 
@@ -57,35 +57,35 @@ describe JavaBuildpack::Container::TomcatGemfireStore do
     end
 
     it 'should changed context.xml',
-       app_fixture:   'container_tomcat_gemfire_store',
-       cache_fixture: 'stub-gemfire-store.tar.gz' do
+       app_fixture:   'container_tomcat_gemfire_module',
+       cache_fixture: 'stub-gemfire-module.tar.gz' do
 
       component.compile
 
       expect((sandbox + 'conf/context.xml').read)
-      .to eq(Pathname.new('spec/fixtures/container_tomcat_gemfire_store_context_after.xml').read)
+      .to eq(Pathname.new('spec/fixtures/container_tomcat_gemfire_module_context_after.xml').read)
 
     end
 
     it 'should changed server.xml',
-       app_fixture:   'container_tomcat_gemfire_store',
-       cache_fixture: 'stub-gemfire-store.tar.gz' do
+       app_fixture:   'container_tomcat_gemfire_module',
+       cache_fixture: 'stub-gemfire-module.tar.gz' do
 
       component.compile
 
       expect((sandbox + 'conf/server.xml').read)
-      .to eq(Pathname.new('spec/fixtures/container_tomcat_gemfire_store_server_after.xml').read)
+      .to eq(Pathname.new('spec/fixtures/container_tomcat_gemfire_module_server_after.xml').read)
 
     end
 
     it 'should changed cache-client.xml',
-       app_fixture:   'container_tomcat_gemfire_store',
-       cache_fixture: 'stub-gemfire-store.tar.gz' do
+       app_fixture:   'container_tomcat_gemfire_module',
+       cache_fixture: 'stub-gemfire-module.tar.gz' do
 
       component.compile
 
       expect((sandbox + 'conf/cache-client.xml').read)
-      .to eq(Pathname.new('spec/fixtures/container_tomcat_gemfire_store_cache_client_after.xml').read)
+      .to eq(Pathname.new('spec/fixtures/container_tomcat_gemfire_module_cache_client_after.xml').read)
 
     end
   end

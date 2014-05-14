@@ -49,7 +49,7 @@ module JavaBuildpack
 
       private
 
-      FILTER = /p-gemfire/.freeze
+      FILTER = /pivotal-gemfire/.freeze
 
       FLUSH_VALVE_CLASS_NAME = 'com.gopivotal.manager.SessionFlushValve'.freeze
 

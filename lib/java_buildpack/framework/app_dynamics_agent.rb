@@ -79,7 +79,7 @@ module JavaBuildpack
       def host_name(java_opts, credentials)
         host_name = credentials['host-name']
         fail "'host-name' credential must be set" unless host_name
-        java_opts.add_system_property 'appdynamics.viewer.hostName', host_name
+        java_opts.add_system_property 'appdynamics.viewer.host', host_name
       end
 
       def port(java_opts, credentials)

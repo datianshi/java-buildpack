@@ -25,7 +25,7 @@ module JavaBuildpack
   module Container
 
     # Encapsulates the detect, compile, and release functionality for Tomcat lifecycle support.
-    class TomcatGemfireStore < JavaBuildpack::Component::VersionedDependencyComponent
+    class TomcatGemfireModule < JavaBuildpack::Component::VersionedDependencyComponent
       include JavaBuildpack::Container
 
       # (see JavaBuildpack::Component::BaseComponent#compile)
@@ -49,11 +49,11 @@ module JavaBuildpack
 
       private
 
-      FILTER = /session-gemfire-replication/.freeze
+      FILTER = /pivotal-gemfire/.freeze
 
       FLUSH_VALVE_CLASS_NAME = 'com.gopivotal.manager.SessionFlushValve'.freeze
 
-      KEY_HOST_NAME = 'locator'.freeze
+      KEY_HOST_NAME = 'host'.freeze
 
       KEY_PASSWORD = 'password'.freeze
 
@@ -113,7 +113,7 @@ module JavaBuildpack
       end
 
       def mutate_configuration
-        puts '       Adding Gemfire Session Replication'
+        puts '       Adding GemFire Session Replication'
 
         context_document = context_xml.open { |file| REXML::Document.new file }
         server_document = server_xml.open { |file| REXML::Document.new file }

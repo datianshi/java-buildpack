@@ -21,7 +21,7 @@ require 'java_buildpack/container/tomcat/tomcat_instance'
 require 'java_buildpack/container/tomcat/tomcat_lifecycle_support'
 require 'java_buildpack/container/tomcat/tomcat_logging_support'
 require 'java_buildpack/container/tomcat/tomcat_redis_store'
-require 'java_buildpack/container/tomcat/tomcat_gemfire_store'
+require 'java_buildpack/container/tomcat/tomcat_gemfire_module'
 
 module JavaBuildpack
   module Container
@@ -50,7 +50,7 @@ module JavaBuildpack
           TomcatLifecycleSupport.new(sub_configuration_context(context, 'lifecycle_support')),
           TomcatLoggingSupport.new(sub_configuration_context(context, 'logging_support')),
           TomcatRedisStore.new(sub_configuration_context(context, 'redis_store')),
-          TomcatGemfireStore.new(sub_configuration_context(context, 'gemfire_module')),
+          TomcatGemfireModule.new(sub_configuration_context(context, 'gemfire_module')),
           TomcatInsightSupport.new(context)
         ]
       end
